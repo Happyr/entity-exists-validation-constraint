@@ -1,0 +1,33 @@
+{
+  "name": "happyr/entity-exists-validation-constraint",
+  "description": "Verify that your entity exists",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Radoje Albijanic",
+      "email": "radoje.albijanic@gmail.com"
+    },
+    {
+      "name": "Tobias Nyholm",
+      "email": "tobias.nyholm@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2",
+    "symfony/validator": "^3.4 || ^4.3"
+  },
+  "require-dev": {
+    "symfony/phpunit-bridge": "^4.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Happyr\\Validator\\Constraint\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Happyr\\Validator\\Constraint\\": "tests/"
+    }
+  }
+}
