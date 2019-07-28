@@ -15,7 +15,8 @@
   ],
   "require": {
     "php": "^7.2",
-    "symfony/validator": "^3.4 || ^4.3"
+    "symfony/validator": "^3.4 || ^4.3",
+    "doctrine/orm": "^2.2"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^4.3"

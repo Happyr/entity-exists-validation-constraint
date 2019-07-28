@@ -24,7 +24,7 @@ final class EntityExistValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof EntityExist) {
-            throw new \LengthException(\sprintf(
+            throw new \LogicException(\sprintf(
                 'You can only pass %s constraint to this validator.',
                 EntityExist::class
             ));
