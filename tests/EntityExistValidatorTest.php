@@ -40,13 +40,6 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate('foo', new  NotNull());
     }
 
-    public function testValidateWithBlankString()
-    {
-        $this->context->expects($this->never())->method('buildViolation');
-        $this->validator->validate('', new  EntityExist());
-        $this->validator->validate(null, new  EntityExist());
-    }
-
     public function testValidateWithNoEntity()
     {
         $constraint = new  EntityExist();
@@ -55,7 +48,10 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate('foobar', $constraint);
     }
 
-    public function testValidateValidEntity()
+    /**
+     * @dataProvider getValidValues
+     */
+    public function testValidateValidEntity($value)
     {
         $this->context->expects($this->never())->method('buildViolation');
         $constraint = new  EntityExist();
@@ -67,7 +63,7 @@ class EntityExistValidatorTest extends TestCase
         $repository
             ->expects($this->once())
             ->method('findOneBy')
-            ->with(['id' => 'foobar'])
+            ->with(['id' => $value])
             ->willReturn('my_user');
 
         $this->entityManager
@@ -76,7 +72,14 @@ class EntityExistValidatorTest extends TestCase
             ->with('App\Entity\User')
             ->willReturn($repository);
 
-        $this->validator->validate('foobar', $constraint);
+        $this->validator->validate($value, $constraint);
+    }
+
+    public function getValidValues()
+    {
+        yield ['foobar'];
+        yield [''];
+        yield [null];
     }
 
     public function testValidateValidEntityWithCustomProperty()

@@ -30,10 +30,6 @@ final class EntityExistValidator extends ConstraintValidator
             ));
         }
 
-        if (empty($value)) {
-            return;
-        }
-
         if (empty($constraint->entity)) {
             throw new \LogicException(\sprintf('Must set "entity" on "%s" validator', EntityExist::class));
         }
