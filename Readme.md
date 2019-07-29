@@ -23,7 +23,7 @@ final class EmailUser
      * @Assert\NotBlank
      * @EntityExist(entity="App\Entity\User")
      *
-     * @var string UUID to user's id property
+     * @var int User's id property
      */
     private $user;
 
@@ -54,9 +54,9 @@ final class EmailUser
     /**
      * @Assert\NotBlank
      * @Assert\Uuid
-     * @EntityExist(entity="App\Entity\User", groups={"DatabaseCall")
+     * @EntityExist(entity="App\Entity\User", groups={"DatabaseCall"}, property="uuid")
      *
-     * @var string UUID to user's id property
+     * @var string Uuid
      */
     private $user;
 
