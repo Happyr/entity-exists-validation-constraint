@@ -21,10 +21,9 @@ final class EmailUser
 {
     /**
      * @Assert\NotBlank
-     * @Assert\Uuid
      * @EntityExist(entity="App\Entity\User")
      *
-     * @var string UUID to user's id property
+     * @var int User's id property
      */
     private $user;
 
@@ -35,6 +34,31 @@ final class EmailUser
      * @var string The name of "Other". We use its "name" property. 
      */
     private $other;
+
+    // ...
+```
+
+In case you are using other constraints to validate the property before entity should be checked in the database (like `@Assert\Uuid`) you should use [Group sequence](https://symfony.com/doc/current/validation/sequence_provider.html) in order to avoid 500 errors from Doctrine mapping.
+
+```php
+namespace App\Message\Command;
+
+use Happyr\Validator\Constraint\EntityExist;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @Assert\GroupSequence({"EmailUser", "DatabaseCall"})
+ */
+final class EmailUser
+{
+    /**
+     * @Assert\NotBlank
+     * @Assert\Uuid
+     * @EntityExist(entity="App\Entity\User", groups={"DatabaseCall"}, property="uuid")
+     *
+     * @var string Uuid
+     */
+    private $user;
 
     // ...
 ```
