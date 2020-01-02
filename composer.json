@@ -15,11 +15,11 @@
   ],
   "require": {
     "php": "^7.2",
-    "symfony/validator": "^3.4 || ^4.3",
+    "symfony/validator": "^3.4 || ^4.3 || ^5.0",
     "doctrine/orm": "^2.4"
   },
   "require-dev": {
-    "symfony/phpunit-bridge": "^4.3"
+    "symfony/phpunit-bridge": "^4.4"
   },
   "autoload": {
     "psr-4": {
