@@ -48,10 +48,7 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate('foobar', $constraint);
     }
 
-    /**
-     * @dataProvider getValidValues
-     */
-    public function testValidateValidEntity($value)
+    public function testValidateValidEntity()
     {
         $this->context->expects($this->never())->method('buildViolation');
         $constraint = new  EntityExist();
@@ -63,7 +60,7 @@ class EntityExistValidatorTest extends TestCase
         $repository
             ->expects($this->once())
             ->method('findOneBy')
-            ->with(['id' => $value])
+            ->with(['id' => 'foobar'])
             ->willReturn('my_user');
 
         $this->entityManager
@@ -72,12 +69,38 @@ class EntityExistValidatorTest extends TestCase
             ->with('App\Entity\User')
             ->willReturn($repository);
 
+        $this->validator->validate('foobar', $constraint);
+    }
+
+    /**
+     * @dataProvider getEmptyOrNull
+     */
+    public function testValidateSkipsIfValueEmptyOrNull($value)
+    {
+        $this->context->expects($this->never())->method('buildViolation');
+        $constraint = new  EntityExist();
+        $constraint->entity = 'App\Entity\User';
+
+        $repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository
+            ->expects($this->exactly(0))
+            ->method('findOneBy')
+            ->with(['id' => $value])
+            ->willReturn('my_user');
+
+        $this->entityManager
+            ->expects($this->exactly(0))
+            ->method('getRepository')
+            ->with('App\Entity\User')
+            ->willReturn($repository);
+
         $this->validator->validate($value, $constraint);
     }
 
-    public function getValidValues()
+    public function getEmptyOrNull()
     {
-        yield ['foobar'];
         yield [''];
         yield [null];
     }
