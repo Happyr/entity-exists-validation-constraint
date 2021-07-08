@@ -43,7 +43,7 @@ final class EntityExistValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('%entity%', $constraint->entity)
                 ->setParameter('%property%', $constraint->property)
-                ->setParameter('%value%', $value)
+                ->setParameter('%value%', (string) $value)
                 ->addViolation();
         }
     }
