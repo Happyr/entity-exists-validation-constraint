@@ -14,7 +14,7 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.2||^8.0",
     "symfony/validator": "^3.4 || ^4.3 || ^5.0",
     "doctrine/orm": "^2.4"
   },
