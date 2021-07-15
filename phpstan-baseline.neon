@@ -1,0 +1,22 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$callback of function spl_autoload_register expects \\(callable\\(string\\)\\: void\\)\\|null, ProxyManager\\\\Autoloader\\\\AutoloaderInterface given\\.$#"
+			count: 1
+			path: src/DependencyInjection/CompilerPass/ProxyServiceWithMockPass.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$proxyOptions$#"
+			count: 1
+			path: src/Generator/LazyLoadingValueHolderGenerator.php
+
+		-
+			message: "#^Call to an undefined method ProxyManager\\\\Proxy\\\\LazyLoadingInterface\\:\\:getWrappedValueHolderValue\\(\\)\\.$#"
+			count: 1
+			path: src/ServiceMock.php
+
