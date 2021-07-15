@@ -34,13 +34,13 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->initialize($this->context);
     }
 
-    public function testValidateWithWrongConstraint()
+    public function testValidateWithWrongConstraint(): void
     {
         $this->expectException(\LogicException::class);
         $this->validator->validate('foo', new  NotNull());
     }
 
-    public function testValidateWithNoEntity()
+    public function testValidateWithNoEntity(): void
     {
         $constraint = new  EntityExist();
 
@@ -48,7 +48,7 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate('foobar', $constraint);
     }
 
-    public function testValidateValidEntity()
+    public function testValidateValidEntity(): void
     {
         $this->context->expects($this->never())->method('buildViolation');
         $constraint = new  EntityExist();
@@ -57,6 +57,7 @@ class EntityExistValidatorTest extends TestCase
         $repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repository
             ->expects($this->once())
             ->method('findOneBy')
@@ -75,7 +76,7 @@ class EntityExistValidatorTest extends TestCase
     /**
      * @dataProvider getEmptyOrNull
      */
-    public function testValidateSkipsIfValueEmptyOrNull($value)
+    public function testValidateSkipsIfValueEmptyOrNull($value): void
     {
         $this->context->expects($this->never())->method('buildViolation');
         $constraint = new  EntityExist();
@@ -84,6 +85,7 @@ class EntityExistValidatorTest extends TestCase
         $repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repository
             ->expects($this->exactly(0))
             ->method('findOneBy')
@@ -99,13 +101,13 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate($value, $constraint);
     }
 
-    public function getEmptyOrNull()
+    public function getEmptyOrNull(): \Generator
     {
         yield [''];
         yield [null];
     }
 
-    public function testValidateValidEntityWithCustomProperty()
+    public function testValidateValidEntityWithCustomProperty(): void
     {
         $this->context->expects($this->never())->method('buildViolation');
         $constraint = new  EntityExist();
@@ -115,6 +117,7 @@ class EntityExistValidatorTest extends TestCase
         $repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repository
             ->expects($this->once())
             ->method('findOneBy')
@@ -130,7 +133,7 @@ class EntityExistValidatorTest extends TestCase
         $this->validator->validate('foobar', $constraint);
     }
 
-    public function testValidateInvalidEntity()
+    public function testValidateInvalidEntity(): void
     {
         $violationBuilder = $this->getMockBuilder(ConstraintViolationBuilderInterface::class)->getMock();
         $violationBuilder->method('setParameter')->will($this->returnSelf());
@@ -142,6 +145,7 @@ class EntityExistValidatorTest extends TestCase
         $repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repository
             ->expects($this->once())
             ->method('findOneBy')
@@ -152,6 +156,6 @@ class EntityExistValidatorTest extends TestCase
             ->method('getRepository')
             ->willReturn($repository);
 
-        $this->validator->validate('foobar', $constraint);
+        $this->validator->validate(1, $constraint);
     }
 }
