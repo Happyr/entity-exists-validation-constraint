@@ -1,7 +1,7 @@
 {
   "name": "happyr/entity-exists-validation-constraint",
-  "description": "Verify that your entity exists",
   "type": "library",
+  "description": "Verify that your entity exists",
   "license": "MIT",
   "authors": [
     {
@@ -15,8 +15,8 @@
   ],
   "require": {
     "php": "^7.2 || ^8.0",
-    "symfony/validator": "^3.4 || ^4.4 || ^5.0 || ^6.0",
-    "doctrine/orm": "^2.4"
+    "doctrine/orm": "^2.4",
+    "symfony/validator": "^3.4 || ^4.4 || ^5.0 || ^6.0"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^5.3"
