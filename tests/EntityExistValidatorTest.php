@@ -37,12 +37,12 @@ class EntityExistValidatorTest extends TestCase
     public function testValidateWithWrongConstraint(): void
     {
         $this->expectException(\LogicException::class);
-        $this->validator->validate('foo', new  NotNull());
+        $this->validator->validate('foo', new NotNull());
     }
 
     public function testValidateWithNoEntity(): void
     {
-        $constraint = new  EntityExist();
+        $constraint = new EntityExist();
 
         $this->expectException(\LogicException::class);
         $this->validator->validate('foobar', $constraint);
@@ -51,7 +51,7 @@ class EntityExistValidatorTest extends TestCase
     public function testValidateValidEntity(): void
     {
         $this->context->expects($this->never())->method('buildViolation');
-        $constraint = new  EntityExist();
+        $constraint = new EntityExist();
         $constraint->entity = 'App\Entity\User';
 
         $repository = $this->getMockBuilder(EntityRepository::class)
@@ -79,7 +79,7 @@ class EntityExistValidatorTest extends TestCase
     public function testValidateSkipsIfValueEmptyOrNull($value): void
     {
         $this->context->expects($this->never())->method('buildViolation');
-        $constraint = new  EntityExist();
+        $constraint = new EntityExist();
         $constraint->entity = 'App\Entity\User';
 
         $repository = $this->getMockBuilder(EntityRepository::class)
@@ -110,7 +110,7 @@ class EntityExistValidatorTest extends TestCase
     public function testValidateValidEntityWithCustomProperty(): void
     {
         $this->context->expects($this->never())->method('buildViolation');
-        $constraint = new  EntityExist();
+        $constraint = new EntityExist();
         $constraint->entity = 'App\Entity\User';
         $constraint->property = 'uuid';
 
@@ -139,7 +139,7 @@ class EntityExistValidatorTest extends TestCase
         $violationBuilder->method('setParameter')->will($this->returnSelf());
 
         $this->context->expects($this->once())->method('buildViolation')->willReturn($violationBuilder);
-        $constraint = new  EntityExist();
+        $constraint = new EntityExist();
         $constraint->entity = 'App\Entity\User';
 
         $repository = $this->getMockBuilder(EntityRepository::class)
