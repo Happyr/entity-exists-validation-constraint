@@ -23,7 +23,7 @@ final class EntityExistValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        if (empty($value)) {
+        if (null === $value || '' === $value) {
             return;
         }
 
