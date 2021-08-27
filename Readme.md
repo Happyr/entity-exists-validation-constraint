@@ -63,6 +63,112 @@ final class EmailUser
     // ...
 ```
 
+Sometimes we may also need to check not only whether the entity exists, but also the state (for example is an article published).
+To do this need to create a new Constraint, which extends from EntityExist instead of the default Symfony Constraint class.
+
+```php
+<?php
+
+namespace App\Validator;
+
+use Happyr\Validator\Constraint\EntityExist;
+
+/**
+ * @Annotation
+ */
+class ArticleEntityExist extends EntityExist
+{
+}
+
+```
+
+Next, we create a validator class. Default convention for Symfony is the fully qualified name of the constraint class suffixed with "Validator".
+See `Symfony\Component\Validator\Constraint::validatedBy` for more information. You can overwrite this method to return another fully qualified name of the validator class.
+In validator class you can inject other services, but not forget to call parent constructor.
+The parent validator `EntityExistValidator` calls the method `checkEntity` with fetched entity.
+The default implementation always returns true, so you need to overwrite this method.
+
+```php
+<?php
+
+namespace App\Validator;
+
+use App\Entity\Article;
+use Doctrine\ORM\EntityManagerInterface;
+use Happyr\Validator\Constraint\EntityExistValidator;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
+
+class ArticleEntityExistValidator extends EntityExistValidator
+{
+    protected function checkEntity(object $entity): bool
+    {
+        if (!$entity instanceof Article) {
+            throw new UnexpectedValueException($entity, Article::class);
+        }
+
+        return $entity->isPublished();
+    }
+}
+```
+
+Another example of validator with constructor injection:
+
+```php
+<?php
+
+namespace App\Offer\Validator;
+
+use App\Offer\Entity\Offer;
+use App\SalesChannel\SalesChannelContext;
+use Doctrine\ORM\EntityManagerInterface;
+use Happyr\Validator\Constraint\EntityExistValidator;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
+
+class OfferEntityExistValidator extends EntityExistValidator
+{
+    private SalesChannelContext $salesChannelContext;
+
+    public function __construct(SalesChannelContext $salesChannelContext, EntityManagerInterface $entityManager)
+    {
+        parent::__construct($entityManager);
+        
+        $this->salesChannelContext = $salesChannelContext;
+    }
+
+    protected function checkEntity(object $entity): bool
+    {
+        if (!$entity instanceof Offer) {
+            throw new UnexpectedValueException($entity, Offer::class);
+        }
+
+        return $entity->isVisible()
+            && $this->salesChannelContext->getCurrentSalesChannel()->equals($entity->getSalesChannel());
+    }
+}
+
+```
+
+Finally, in your entity or DTO, use a new constraint instead of `EntityExist`.
+
+```php
+<?php
+
+namespace App\Dto;
+
+use App\Validator\ArticleEntityExist;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class CommentArticleRequestDto
+{
+    /**
+     * @Assert\NotBlank()
+     * @ArticleEntityExist(entity="App\Entity\Article")
+     */
+    public int $articleId;
+
+    //....
+```
+
 ## Install
 
 ```console
