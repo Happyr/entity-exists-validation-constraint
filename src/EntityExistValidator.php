@@ -11,8 +11,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Radoje Albijanic <radoje@blackmountainlabs.me>
+ * @author Marcin Morawski <marcin@morawskim.pl>
  */
-final class EntityExistValidator extends ConstraintValidator
+class EntityExistValidator extends ConstraintValidator
 {
     private $entityManager;
 
@@ -39,12 +40,17 @@ final class EntityExistValidator extends ConstraintValidator
             $constraint->property => $value,
         ]);
 
-        if (null === $data) {
+        if (null === $data || !$this->checkEntity($data)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('%entity%', $constraint->entity)
                 ->setParameter('%property%', $constraint->property)
                 ->setParameter('%value%', (string) $value)
                 ->addViolation();
         }
+    }
+
+    protected function checkEntity(object $entity): bool
+    {
+        return true;
     }
 }
