@@ -1,8 +1,8 @@
 {
   "name": "happyr/entity-exists-validation-constraint",
-  "type": "library",
   "description": "Verify that your entity exists",
   "license": "MIT",
+  "type": "library",
   "authors": [
     {
       "name": "Radoje Albijanic",

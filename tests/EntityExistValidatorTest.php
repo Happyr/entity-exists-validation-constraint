@@ -166,6 +166,11 @@ class EntityExistValidatorTest extends TestCase
      */
     public function testValidateFromAttribute()
     {
+        $numRequired = (new \ReflectionMethod(AnnotationLoader::class, '__construct'))->getNumberOfRequiredParameters();
+        if ($numRequired > 0) {
+            $this->markTestSkipped('This test is skipped on Symfony <5.2');
+        }
+
         $this->context->expects($this->never())->method('buildViolation');
 
         $classMetadata = new ClassMetadata(EntityDummy::class);
