@@ -12,6 +12,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class EntityExistValidatorTest extends TestCase
@@ -158,4 +160,46 @@ class EntityExistValidatorTest extends TestCase
 
         $this->validator->validate(1, $constraint);
     }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testValidateFromAttribute()
+    {
+        $numRequired = (new \ReflectionMethod(AnnotationLoader::class, '__construct'))->getNumberOfRequiredParameters();
+        if ($numRequired > 0) {
+            $this->markTestSkipped('This test is skipped on Symfony <5.2');
+        }
+
+        $this->context->expects($this->never())->method('buildViolation');
+
+        $classMetadata = new ClassMetadata(EntityDummy::class);
+        (new AnnotationLoader())->loadClassMetadata($classMetadata);
+
+        [$constraint] = $classMetadata->properties['user']->constraints;
+
+        $repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(['uuid' => 'foobar'])
+            ->willReturn('my_user');
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with('App\Entity\User')
+            ->willReturn($repository);
+
+        $this->validator->validate('foobar', $constraint);
+    }
+}
+
+class EntityDummy
+{
+    #[EntityExist(entity: 'App\Entity\User', property: 'uuid')]
+    private $user;
 }
