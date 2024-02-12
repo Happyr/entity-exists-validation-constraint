@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Validator\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class EntityExistValidatorTest extends TestCase
@@ -166,15 +166,10 @@ class EntityExistValidatorTest extends TestCase
      */
     public function testValidateFromAttribute()
     {
-        $numRequired = (new \ReflectionMethod(AnnotationLoader::class, '__construct'))->getNumberOfRequiredParameters();
-        if ($numRequired > 0) {
-            $this->markTestSkipped('This test is skipped on Symfony <5.2');
-        }
-
         $this->context->expects($this->never())->method('buildViolation');
 
         $classMetadata = new ClassMetadata(EntityDummy::class);
-        (new AnnotationLoader())->loadClassMetadata($classMetadata);
+        (new AttributeLoader())->loadClassMetadata($classMetadata);
 
         [$constraint] = $classMetadata->properties['user']->constraints;
 
