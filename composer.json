@@ -20,7 +20,9 @@
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^6.0",
-    "symfony/validator": "^6.4 || ^7.0"
+    "symfony/validator": "^6.4 || ^7.0",
+    "phpunit/phpunit": "^10.3",
+    "vimeo/psalm": "^5.24"
   },
   "autoload": {
     "psr-4": {
