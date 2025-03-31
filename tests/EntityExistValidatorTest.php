@@ -64,7 +64,7 @@ class EntityExistValidatorTest extends TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['id' => 'foobar'])
-            ->willReturn('my_user');
+            ->willReturn(new UserDummy());
 
         $this->entityManager
             ->expects($this->once())
@@ -92,7 +92,7 @@ class EntityExistValidatorTest extends TestCase
             ->expects($this->exactly(0))
             ->method('findOneBy')
             ->with(['id' => $value])
-            ->willReturn('my_user');
+            ->willReturn(new UserDummy());
 
         $this->entityManager
             ->expects($this->exactly(0))
@@ -124,7 +124,7 @@ class EntityExistValidatorTest extends TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['uuid' => 'foobar'])
-            ->willReturn('my_user');
+            ->willReturn(new UserDummy());
 
         $this->entityManager
             ->expects($this->once())
@@ -181,7 +181,7 @@ class EntityExistValidatorTest extends TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['uuid' => 'foobar'])
-            ->willReturn('my_user');
+            ->willReturn(new UserDummy());
 
         $this->entityManager
             ->expects($this->once())
@@ -191,6 +191,10 @@ class EntityExistValidatorTest extends TestCase
 
         $this->validator->validate('foobar', $constraint);
     }
+}
+
+class UserDummy
+{
 }
 
 class EntityDummy
