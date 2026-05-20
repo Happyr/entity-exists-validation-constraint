@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@2.7.0
+        uses: shivammathur/setup-php@2.37.1
         with:
           php-version: ${{ matrix.versions.php }}
           coverage: none
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@2.5.0
+        uses: shivammathur/setup-php@2.37.1
         with:
           php-version: 8.3
           coverage: none
